@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Details</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/view_details.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body>
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center">
+            <i class="fas fa-balance-scale me-2"></i> Crime Report Management <span class="text-warning">(Police)</span>
+        </h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('police_home') }}" class="text-white fs-5 menu-item hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('cases') }}" class="text-white fs-5 menu-item hover-effect">Cases</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_details') }}" class="text-white fs-5 menu-item hover-effect">View Details</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 menu-item hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container mt-4 p-4 shadow-lg rounded bg-white">
+        <h4 class="mb-4 text-center text-primary">Person Profile</h4>
+
+        <!-- Person's Details Section -->
+        <div class="d-flex justify-content-between align-items-center mb-4 p-3 border rounded shadow-sm">
+            <div class="d-flex align-items-center flex-wrap">
+                {% if person.photo %}
+                    <img src="{{ url_for('static', filename='uploads/' + person.photo.strip()) }}" alt="Photo" style="max-width: 150px;" class="img-thumbnail me-4 mb-3 mb-md-0">
+                {% else %}
+                    <img src="{{ url_for('static', filename='images/default.png') }}" alt="No Photo" style="max-width: 150px;" class="img-thumbnail me-4 mb-3 mb-md-0">
+                {% endif %}
+                <div>
+                    <h5>{{ person.name }}</h5>
+                    <p class="mb-0">
+                        <strong>Age:</strong> {{ person.age }}<br>
+                        <strong>Phone:</strong> {{ person.phone }}<br>
+                        <strong>Aadhaar:</strong> {{ person.aadhaar }}<br>
+                        <strong>Address:</strong> {{ person.address }}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cases Section -->
+        <h4 class="mb-4 text-center text-primary">Cases Involved</h4>
+        {% if cases %}
+            {% for case in cases %}
+                <div class="mb-4 p-3 border rounded shadow-sm">
+                    <h5>Case No. {{ loop.index }}</h5>
+
+                    <!-- Case Type and Status Outside the Table -->
+                    <div class="mb-3">
+                        <strong>Role:</strong> {{ role|capitalize }}<br>
+                        <strong>Case Type:</strong> {{ case.case_type }}<br>
+                        <strong>Case Status:</strong> {{ case.status }}
+                    </div>
+
+                    <!-- Case Details Table -->
+                    <table class="table table-bordered mt-3">
+                        <thead>
+                            <tr>
+                                <th>Field</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>FIR Number</strong></td>
+                                <td>{{ case.fir_number }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Case Overview</strong></td>
+                                <td>{{ case.overview }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Judgment</strong></td>
+                                <td>{{ case.judgement }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>District</strong></td>
+                                <td>{{ case.district }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Police Station</strong></td>
+                                <td>{{ case.station }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date Filed</strong></td>
+                                <td>{{ case.case_date }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center text-muted">No cases found for this person.</p>
+        {% endif %}
+
+        <div class="text-center mt-4">
+            <a href="{{ url_for('view_details') }}" class="btn btn-secondary">Back to Search</a>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Ensuring Justice & Safety
+    </footer>
+</body>
+</html>

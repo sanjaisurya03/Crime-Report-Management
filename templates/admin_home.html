@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Crime Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body class="bg-light text-dark">
+
+    <!-- Header with Navigation -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center"><i class="fas fa-balance-scale me-2"></i>Crime Report Management</h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('admin_home') }}" class="text-white fs-5 menu-item hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('manage_cases') }}" class="text-white fs-5 menu-item hover-effect">Manage Cases</a></li>
+                <li class="mx-3"><a href="{{ url_for('manage_users') }}" class="text-white fs-5 menu-item hover-effect">Manage Users</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_reports') }}" class="text-white fs-5 menu-item hover-effect">View Reports</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 menu-item hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container-fluid p-4">
+        <!-- Quick Stats Cards -->
+        <div class="row text-center mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3 shadow-lg hover-effect">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-folder-open"></i> Total Cases</h5>
+                        <p class="card-text display-6" id="totalCases">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3 shadow-lg hover-effect">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-exclamation-triangle"></i> Pending Cases</h5>
+                        <p class="card-text display-6" id="pendingCases">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3 shadow-lg hover-effect">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-check-circle"></i> Closed Cases</h5>
+                        <p class="card-text display-6" id="closedCases">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Expanded Description Section -->
+        <div class="row align-items-center mt-4 p-4 bg-white rounded shadow-lg">
+            <div class="col-md-6">
+                <h2 class="text-dark fs-3 mb-3"><i class="fas fa-gavel"></i> Justice & Crime Prevention</h2>
+                <p class="text-dark mb-3">
+                    The Crime Report Management System empowers law enforcement agencies to maintain justice and safety by efficiently tracking cases and promoting transparency. By managing crime data effectively, we ensure thorough investigations and timely justice.
+                </p>
+                <p class="text-dark mb-3">
+                    The system helps law enforcement identify crime patterns, prioritize cases, and allocate resources efficiently. It improves operational efficiency, strengthens the legal system, and creates a safer society for everyone.
+                </p>
+                <p class="text-dark mb-3">
+                    Real-time tracking enables quick decision-making, ensuring that urgent cases are prioritized. Furthermore, archived data ensures that no case is forgotten, giving justice a chance to be served at any stage.
+                </p>
+                <p class="text-dark mb-3">
+                    This platform is designed to foster collaboration between law enforcement agencies, the judiciary, and the public. By streamlining case management, we create a more transparent and accountable justice system, ultimately leading to a reduction in crime rates.
+                </p>
+            </div>
+            <div class="col-md-6">
+                <img src="{{ url_for('static', filename='images/crime_justice.jpg') }}" class="img-fluid rounded shadow-lg" alt="Crime and Justice">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Ensuring Justice & Safety
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchCaseStats();
+        });
+
+        function fetchCaseStats() {
+            fetch("{{ url_for('get_case_stats') }}")
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("totalCases").textContent = data.total || 0;
+                    document.getElementById("pendingCases").textContent = data.pending || 0;
+                    document.getElementById("closedCases").textContent = data.closed || 0;
+                })
+                .catch(error => console.error("Error fetching case stats:", error));
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Public Dashboard - Crime Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body class="bg-light text-dark">
+
+    <!-- Header -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center">
+            <i class="fas fa-balance-scale me-2"></i> Crime Report Management <span class="text-warning">(Public)</span>
+        </h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('public_home') }}" class="text-white fs-5 menu-item hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('safety_tips') }}" class="text-white fs-5 menu-item hover-effect">Safety Tips</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_public_reports') }}" class="text-white fs-5 hover-effect">View Reports</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 menu-item hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container-fluid p-4">
+        <!-- Stats Cards -->
+        <div class="row text-center mb-4">
+            <div class="col-md-4">
+                <div class="card text-white bg-primary mb-3 shadow-lg hover-effect">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-chart-bar"></i> Total Reported Cases</h5>
+                        <p class="card-text display-6" id="totalCases">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-warning mb-3 shadow-lg hover-effect">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-hourglass-half"></i> Pending Cases</h5>
+                        <p class="card-text display-6" id="pendingCases">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card text-white bg-success mb-3 shadow-lg hover-effect">
+                    <div class="card-body">
+                        <h5 class="card-title"><i class="fas fa-check-double"></i> Closed Cases</h5>
+                        <p class="card-text display-6" id="closedCases">Loading...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Description Section -->
+        <div class="row align-items-center mt-4 p-4 bg-white rounded shadow-lg">
+            <div class="col-md-6 text-justify">
+                <h2 class="text-dark fs-3 mb-3"><i class="fas fa-user-shield"></i> Transparency for Public Safety</h2>
+                <p class="text-dark mb-4">
+                    As a public user, this dashboard gives you access to view real-time data about reported crime cases.
+                    Our goal is to maintain transparency, raise awareness, and build trust between citizens and law enforcement agencies.
+                </p>
+                <p class="text-dark mb-4">
+                    You can use this platform to understand crime trends in your locality and stay informed.
+                    Though you cannot alter any data, your awareness is a critical step toward community safety and justice.
+                </p>
+                <p class="text-dark mb-4">
+                    By keeping crime reports visible to the public, we hope to encourage accountability and vigilance throughout society.
+                </p>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center">
+                <img src="{{ url_for('static', filename='images/crime_justice.jpg') }}" class="img-fluid rounded shadow-lg" alt="Crime Awareness">
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Empowering Public Awareness
+    </footer>
+
+    <!-- Stats Fetch Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch("{{ url_for('get_case_stats') }}")
+                .then(res => res.json())
+                .then(data => {
+                    document.getElementById("totalCases").textContent = data.total || 0;
+                    document.getElementById("pendingCases").textContent = data.pending || 0;
+                    document.getElementById("closedCases").textContent = data.closed || 0;
+                })
+                .catch(error => {
+                    console.error("Failed to fetch case stats:", error);
+                });
+        });
+    </script>
+</body>
+</html>

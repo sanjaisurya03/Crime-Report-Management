@@ -1,0 +1,168 @@
+/* Updated styles.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background: #4a6274;;
+    padding: 20px;
+    width: 350px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 70px;
+    color: #ffffff;
+}
+
+h2 {
+    margin-bottom: 15px;
+    color: #ffffff;
+}
+
+.form-box {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
+
+label {
+    display: block;
+    text-align: left;
+    margin-top: 10px;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f8f9fa; /* Light background for contrast */
+    color: #333; /* Dark text for readability */
+}
+
+button {
+    margin-top: 15px;
+    width: 100%;
+    padding: 10px;
+    background-color: #005fa3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* First page - Align the Next button to the right corner */
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Align the "Next" button to the right */
+    margin-top: 15px;
+}
+
+.next-btn, .prev-btn, .register-btn {
+    padding: 10px;
+    width: 48%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Styling for the buttons on both pages */
+.next-btn, .register-btn {
+    background-color: #007BFF;
+    color: white;
+}
+
+.prev-btn {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Second page - Space between the "Back" and "Register" buttons */
+#register-step-2 .button-container {
+    justify-content: space-between; /* Space between the buttons on the second page */
+}
+
+.phone-container {
+    display: flex;
+    gap: 5px;
+}
+
+.phone-container select {
+    width: 35%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.phone-container input {
+    width: 65%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Hide the default password visibility icon */
+input[type="password"]::-ms-reveal,
+input[type="password"]::-webkit-contacts-auto-fill-button {
+    display: none;
+}
+
+.password-container {
+    position: relative;
+}
+
+.password-container input {
+    padding-right: 30px;
+}
+
+.eye-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    font-size: 18px;
+    color: #4a6274;
+}
+/* Header Styling */
+header {
+    width: 100%;
+    text-align: left;
+    background: linear-gradient(90deg, #343a40 0%, #1d2124 100%);
+    color: #ffd700;
+    border-bottom: 3px solid #ffd700;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    padding: 25px 50px;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+/* Footer Styling */
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background: #333;
+    color: white;
+    padding: 20px 30px;
+    text-align: center;
+}
+

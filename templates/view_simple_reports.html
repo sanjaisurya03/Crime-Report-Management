@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Reports - Crime Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/reports_styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script>
+        function searchReports() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let rows = document.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+            });
+        }
+    </script>
+    <style>
+        .search-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
+        .input-group input {
+            height: 40px;
+            border-radius: 20px;
+        }
+    </style>
+</head>
+<body class="bg-light text-dark">
+
+    <!-- Header -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center"><i class="fas fa-balance-scale me-2"></i> Crime Report Management <span class="text-warning">(Public)</span></h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('public_home') }}" class="text-white fs-5 hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('safety_tips') }}" class="text-white fs-5 hover-effect">Safety Tips</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_public_reports') }}" class="text-white fs-5 hover-effect">View Reports</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container mt-4 p-4 shadow-lg rounded bg-white">
+        <h4 class="mb-4 text-center text-primary">Case Reports Overview</h4>
+
+        <!-- Search -->
+        <div class="search-container">
+            <div class="input-group w-100">
+                <input type="text" id="searchInput" class="form-control" onkeyup="searchReports()" placeholder="Search by case type, judgement...">
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped w-100">
+                <thead class="table-dark">
+                    <tr>
+                        <th>S.No</th>
+                        <th>Case Type</th>
+                        <th>Overview</th>
+                        <th>Judgement</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for case in cases %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ case.case_type }}</td>
+                        <td>{{ case.overview }}</td>
+                        <td>{{ case.judgement or "Pending" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Public Awareness and Justice
+    </footer>
+
+</body>
+</html>

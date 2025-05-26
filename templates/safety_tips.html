@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Safety Tips - Crime Management</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body class="bg-light text-dark">
+
+    <!-- Header -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center">
+            <i class="fas fa-balance-scale me-2"></i> Crime Report Management <span class="text-warning">(Public)</span>
+        </h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('public_home') }}" class="text-white fs-5 menu-item hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('safety_tips') }}" class="text-white fs-5 menu-item hover-effect">Safety Tips</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_public_reports') }}" class="text-white fs-5 hover-effect">View Reports</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 menu-item hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Content -->
+    <div class="container mt-5 p-4 bg-white rounded shadow-lg">
+        <h2 class="mb-4 text-primary"><i class="fas fa-shield-alt"></i> Safety Tips & Resources</h2>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4 class="text-dark"><i class="fas fa-user-shield"></i> Personal Safety</h4>
+                <ul class="text-dark">
+                    <li>Always stay aware of your surroundings, especially at night.</li>
+                    <li>Keep emergency contacts saved in your phone.</li>
+                    <li>Avoid sharing personal info with strangers online or offline.</li>
+                    <li>Install safety apps like CitizenCop or bSafe.</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-dark"><i class="fas fa-home"></i> Home & Neighborhood Safety</h4>
+                <ul class="text-dark">
+                    <li>Ensure all doors and windows have strong locks.</li>
+                    <li>Join or form a local neighborhood watch group.</li>
+                    <li>Report any suspicious activity to local police immediately.</li>
+                    <li>Install security cameras if possible.</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h4 class="text-dark"><i class="fas fa-laptop-code"></i> Cyber Safety</h4>
+                <ul class="text-dark">
+                    <li>Don't click unknown links or open suspicious attachments.</li>
+                    <li>Use strong, unique passwords and enable 2FA wherever possible.</li>
+                    <li>Never share OTPs or banking information.</li>
+                    <li>Report cybercrime at <a href="https://cybercrime.gov.in" target="_blank">cybercrime.gov.in</a>.</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h4 class="text-dark"><i class="fas fa-phone-alt"></i> Emergency Contacts</h4>
+                <ul class="text-dark">
+                    <li><strong>Police:</strong> 100</li>
+                    <li><strong>Women’s Helpline:</strong> 1091</li>
+                    <li><strong>Child Helpline:</strong> 1098</li>
+                    <li><strong>Cyber Crime Helpdesk:</strong> 1930</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <p class="text-muted">Stay safe, stay alert. Together we can build a safer society.</p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Empowering Public Awareness
+    </footer>
+
+</body>
+</html>

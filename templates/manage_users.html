@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_users.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body class="bg-light text-dark">
+    
+    <!-- Header with Navigation -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center"><i class="fas fa-balance-scale me-2"></i>Crime Report Management</h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('admin_home') }}" class="text-white fs-5 menu-item hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('manage_cases') }}" class="text-white fs-5 menu-item hover-effect">Manage Cases</a></li>
+                <li class="mx-3"><a href="{{ url_for('manage_users') }}" class="text-white fs-5 menu-item hover-effect">Manage Users</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_reports') }}" class="text-white fs-5 menu-item hover-effect">View Reports</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 menu-item hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container mt-4 p-4 shadow-lg rounded bg-white">
+        <h4 class="mb-4 text-center text-primary">User Management</h4>
+        
+        <!-- Search and Filter -->
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <input type="text" id="searchUser" class="form-control" placeholder="Search Users..." onkeyup="searchUsers()">
+            </div>
+            <div class="col-md-6">
+                <select id="roleFilter" class="form-control" onchange="filterUsers()">
+                    <option value="">All Roles</option>
+                    <option value="police">Police</option>
+                    <option value="public">Public User</option>
+                </select>
+            </div>
+        </div>
+        
+        <!-- Users Table -->
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Access</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="userTableBody">
+                    <tr><td colspan="7" class="text-center">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Ensuring Justice & Safety
+    </footer>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchUsers();
+        });
+
+        function fetchUsers() {
+            fetch("{{ url_for('get_users') }}")
+                .then(response => response.json())
+                .then(data => {
+                    let tableBody = document.getElementById("userTableBody");
+                    tableBody.innerHTML = "";
+                    if (data.length === 0) {
+                        tableBody.innerHTML = "<tr><td colspan='7' class='text-center'>No users found</td></tr>";
+                        return;
+                    }
+                    data.forEach(user => {
+                        if (user.role !== 'admin') {
+                            let accessStatus = user.access === 'accepted' ? '✅ Accepted' 
+                                : user.access === 'denied' ? '⛔ Denied' 
+                                : '⚠ Pending Approval';
+
+                            let accessButtons = `
+                                <button class="btn btn-success btn-sm" onclick="updateAccess(${user.id}, 'accepted')">Accept</button>
+                                <button class="btn btn-danger btn-sm" onclick="updateAccess(${user.id}, 'denied')">Deny</button>
+                            `;
+                            let row = `
+                                <tr>
+                                    <td>${user.id}</td>
+                                    <td>${user.username}</td>
+                                    <td>${user.email}</td>
+                                    <td>${user.phone}</td>
+                                    <td>${user.role}</td>
+                                    <td>${accessStatus}</td>
+                                    <td>
+                                        ${accessButtons}
+                                        <button class="btn btn-danger btn-sm" onclick="deleteUser(${user.id})">Delete</button>
+                                    </td>
+                                </tr>
+                            `;
+                            tableBody.innerHTML += row;
+                        }
+                    });
+                })
+                .catch(error => {
+                    console.error("Error fetching users:", error);
+                    alert("Failed to load user data.");
+                });
+        }
+
+        function updateAccess(userId, status) {
+            fetch("{{ url_for('update_access') }}", {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ id: userId, status: status })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    alert(data.message);
+                } else if (data.error) {
+                    alert("Error: " + data.error);
+                } else {
+                    alert("Unexpected response from server.");
+                }
+                fetchUsers(); // Refresh the user list
+            })
+            .catch(error => {
+                console.error("Error updating access:", error);
+                alert("Failed to update user access. Please try again.");
+            });
+        }
+
+        function searchUsers() {
+            let input = document.getElementById("searchUser").value.toLowerCase();
+            let rows = document.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+            });
+        }
+        
+        function filterUsers() {
+            let role = document.getElementById("roleFilter").value.toLowerCase();
+            let rows = document.querySelectorAll("tbody tr");
+            rows.forEach(row => {
+                let roleCell = row.cells[4]?.textContent.toLowerCase();
+                row.style.display = (role === "" || roleCell === role) ? "" : "none";
+            });
+        }
+        
+        function deleteUser(userId) {
+            if (confirm("Are you sure you want to delete this user?")) {
+                fetch("{{ url_for('delete_user') }}", {
+                    method: 'DELETE',
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ id: userId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message) {
+                        alert(data.message);
+                    } else if (data.error) {
+                        alert("Error: " + data.error);
+                    } else {
+                        alert("Unexpected response from server.");
+                    }
+                    fetchUsers();
+                })
+                .catch(error => {
+                    console.error("Error deleting user:", error);
+                    alert("Failed to delete user. Please try again.");
+                });
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Case</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/manage_cases.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+</head>
+<body class="bg-light text-dark">
+
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h3 class="ms-3 d-flex align-items-center">
+            <i class="fas fa-balance-scale me-2"></i> Crime Report Management <span class="text-warning">(Police)</span>
+        </h3>
+        <nav>
+            <ul class="list-unstyled d-flex m-0">
+                <li class="mx-3"><a href="{{ url_for('police_home') }}" class="text-white fs-5 menu-item hover-effect">Home</a></li>
+                <li class="mx-3"><a href="{{ url_for('cases') }}" class="text-white fs-5 menu-item hover-effect">Cases</a></li>
+                <li class="mx-3"><a href="{{ url_for('view_details') }}" class="text-white fs-5 menu-item hover-effect">View Details</a></li>
+                <li class="mx-3"><a href="{{ url_for('logout') }}" class="text-white fs-5 menu-item hover-effect">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container mt-4 p-4 shadow-lg rounded bg-white">
+        <h4 class="mb-4 text-center text-primary">Case Details</h4>
+        <form class="row g-3">
+            <input type="hidden" name="case_id" value="{{ case.id if case else '' }}">
+
+            <div class="col-md-6">
+                <label class="form-label">District:</label>
+                <input type="text" class="form-control" value="{{ case.district if case else '' }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Police Station:</label>
+                <input type="text" class="form-control" value="{{ case.station if case else '' }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Case Incharge:</label>
+                <input type="text" class="form-control" value="{{ case.incharge_case if case else '' }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">FIR Number:</label>
+                <input type="text" class="form-control" value="{{ case.fir_number if case else '' }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Case Date:</label>
+                <input type="date" class="form-control" value="{{ case.case_date if case else '' }}" readonly>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Case Type:</label>
+                <input type="text" class="form-control" value="{{ case.case_type if case else '' }}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Number of Victims:</label>
+                <input type="text" class="form-control" value="{{ victims | length }}" readonly>
+            </div>
+            <div id="victim_container" class="row g-3">
+                {% for victim in victims %}
+                    <div class="col-md-4">
+                        <label class="form-label">Victim Name:</label>
+                        <input type="text" class="form-control" value="{{ victim.name }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Address:</label>
+                        <input type="text" class="form-control" value="{{ victim.address }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Phone:</label>
+                        <input type="text" class="form-control" value="{{ victim.phone }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Age:</label>
+                        <input type="text" class="form-control" value="{{ victim.age }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Aadhaar:</label>
+                        <input type="text" class="form-control" value="{{ victim.aadhaar }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Photo:</label>
+                        {% if victim.photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + victim.photo) }}" class="img-thumbnail" width="100">
+                        {% else %}<p class="text-muted">No photo</p>{% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Number of Suspects:</label>
+                <input type="text" class="form-control" value="{{ suspects | length }}" readonly>
+            </div>
+            <div id="suspect_container" class="row g-3">
+                {% for suspect in suspects %}
+                    <div class="col-md-4">
+                        <label class="form-label">Suspect Name:</label>
+                        <input type="text" class="form-control" value="{{ suspect.name }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Address:</label>
+                        <input type="text" class="form-control" value="{{ suspect.address }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Phone:</label>
+                        <input type="text" class="form-control" value="{{ suspect.phone }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Age:</label>
+                        <input type="text" class="form-control" value="{{ suspect.age }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Aadhaar:</label>
+                        <input type="text" class="form-control" value="{{ suspect.aadhaar }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Photo:</label>
+                        {% if suspect.photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + suspect.photo) }}" class="img-thumbnail" width="100">
+                        {% else %}<p class="text-muted">No photo</p>{% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Number of Criminals:</label>
+                <input type="text" class="form-control" value="{{ criminals | length }}" readonly>
+            </div>
+            <div id="criminal_container" class="row g-3">
+                {% for criminal in criminals %}
+                    <div class="col-md-4">
+                        <label class="form-label">Criminal Name:</label>
+                        <input type="text" class="form-control" value="{{ criminal.name }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Address:</label>
+                        <input type="text" class="form-control" value="{{ criminal.address }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Phone:</label>
+                        <input type="text" class="form-control" value="{{ criminal.phone }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Age:</label>
+                        <input type="text" class="form-control" value="{{ criminal.age }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Aadhaar:</label>
+                        <input type="text" class="form-control" value="{{ criminal.aadhaar }}" readonly>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Photo:</label>
+                        {% if criminal.photo %}
+                        <img src="{{ url_for('static', filename='uploads/' + criminal.photo) }}" class="img-thumbnail" width="100">
+                        {% else %}<p class="text-muted">No photo</p>{% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">Case Overview:</label>
+                <textarea class="form-control" readonly>{{ case.overview if case else '' }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Judgment Details:</label>
+                <textarea class="form-control" readonly>{{ case.judgement if case else '' }}</textarea>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Status:</label>
+                <input type="text" class="form-control" value="{{ case.status if case else '' }}" readonly>
+            </div>
+
+            <div class="col-md-6">
+                <label class="form-label">FIR File:</label>
+                <div class="border p-1 rounded bg-light">
+                    {% if case.fir_file %}
+                        <p><strong>Uploaded FIR:</strong> {{ case.fir_file }}</p>
+                        <iframe src="{{ url_for('static', filename='uploads/' + case.fir_file) }}" width="100%" height="200px" style="border: none;"></iframe>
+                    {% else %}
+                        <p class="text-muted">No FIR file uploaded.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-4">
+                <a href="{{ url_for('cases') }}" class="btn btn-secondary">Back to Cases</a>
+                <button type="button" class="btn btn-primary" onclick="printPage()">
+                    <i class="fas fa-file-pdf"></i> Download Case Report
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Ensuring Justice & Safety
+    </footer>
+
+    <script>
+        function printPage() {
+            window.print();
+        }
+    </script>
+
+</body>
+</html>

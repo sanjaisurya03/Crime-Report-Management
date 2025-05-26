@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Record Management - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h1><i class="fas fa-balance-scale me-2"></i> Crime Report Management</h1>
+    </header>
+
+    <div class="container">
+        <div class="form-box">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" name="username" required>
+
+                <label for="login-password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="login-password" name="password" required>
+                    <span class="eye-icon" onclick="togglePasswordVisibility('login-password', this)">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+
+                <label for="login-role">Role</label>
+                <select id="login-role" name="role">
+                    <option value="admin">Admin</option>
+                    <option value="police">Police</option>
+                    <option value="public">Public User</option>
+                </select>
+
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="{{ url_for('register_page') }}">Register</a></p>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Ensuring Justice & Safety
+    </footer>
+
+    <script>
+        function togglePasswordVisibility(inputId, icon) {
+            let passwordField = document.getElementById(inputId);
+            let eyeIcon = icon.querySelector("i");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+ document.getElementById("login-form").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const username = document.getElementById('login-username').value.trim();
+            const password = document.getElementById('login-password').value.trim();
+            const role = document.getElementById('login-role').value;
+
+            if (!username || !password || !role) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
+            try {
+                const response = await fetch("/login", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ username, password, role })
+                });
+
+                const data = await response.json(); // Parse JSON only once
+
+                if (!response.ok) throw new Error(data.error || "Invalid credentials.");
+
+                alert(data.message);
+                window.location.href = data.redirect;  // Redirect based on role
+            } catch (error) {
+                alert(error.message || "An error occurred, please try again.");
+            }
+        });
+    </script>
+
+</body>
+</html>
+

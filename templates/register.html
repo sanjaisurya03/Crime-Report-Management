@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crime Record Management - Register</title>
+    <link rel="stylesheet" href="../static/css/register_styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+      
+    <!-- Header -->
+    <header class="bg-dark text-white p-4 d-flex justify-content-between align-items-center shadow-lg rounded">
+        <h1><i class="fas fa-balance-scale me-2"></i> Crime Report Management</h1>
+    </header>
+
+    <div class="container">
+        <!-- Step 1: Basic Information -->
+        <div class="form-box" id="register-step-1">
+            <h2>Register</h2>
+            <form id="step-1-form">
+                <label for="register-username">Username</label>
+                <input type="text" id="register-username" name="username" required>
+
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" name="email" required>
+
+                <label for="register-phone">Phone Number</label>
+                <div class="phone-container">
+                    <select id="country-code" name="country_code">
+                        <option value="+91">+91 (India)</option>
+                        <option value="+1">+1 (USA)</option>
+                        <option value="+44">+44 (UK)</option>
+                        <option value="+61">+61 (Australia)</option>
+                    </select>
+                    <input type="text" id="register-phone" name="phone" pattern="\d{10}" title="Phone number must be 10 digits" required>
+                </div>
+
+                <label for="register-password">Password</label>
+                <div class="password-container">
+                    <input type="password" id="register-password" name="password" required 
+                        pattern="^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$"
+                        title="Password must be at least 6 characters, include 1 uppercase letter, 1 number, and 1 special character">
+                    <span class="eye-icon" onclick="togglePasswordVisibility('register-password', this)">
+                        <i class="fas fa-eye"></i>
+                    </span>
+                </div>
+
+                <label for="register-role">Role</label>
+                <select id="register-role" name="role" onchange="toggleFields()">
+                    <option value="">Select Role</option>
+                    <option value="police">Police</option>
+                    <option value="public">Public User</option>
+                </select>
+
+                <button type="button" class="next-btn" onclick="nextStep()" disabled id="next-button">Next →</button>
+            </form>
+        </div>
+
+        <!-- Step 2: Additional Information -->
+        <div class="form-box hidden" id="register-step-2">
+            <h2>Additional Information</h2>
+            <form id="step-2-form">
+                <label for="dob">Date of Birth</label>
+                <input type="date" id="dob" name="dob" required>
+
+                <!-- Police-Specific Fields -->
+                <div id="police-fields" class="hidden">
+                    <label for="police-id">Police ID</label>
+                    <input type="text" id="police-id" name="police_id">
+
+                    <label for="station-name">Station Name</label>
+                    <input type="text" id="station-name" name="station_name">
+
+                    <label for="police-position">Position</label>
+                    <select id="police-position" name="police_position">
+                        <option value="inspector">Inspector</option>
+                        <option value="sub-inspector">Sub-Inspector</option>
+                        <option value="constable">Constable</option>
+                    </select>
+                </div>
+
+                <!-- Public User Fields -->
+                <div id="public-fields" class="hidden">
+                    <label for="aadhaar">Aadhaar Number</label>
+                    <input type="text" id="aadhaar" name="aadhaar" pattern="\d{12}" title="Aadhaar must be 12 digits">
+
+                    <label for="current-status">Current Status</label>
+                    <select id="current-status" name="current_status" onchange="toggleOrganizationField()">
+                        <option value="studying">Studying</option>
+                        <option value="working">Working</option>
+                    </select>
+
+                    <label for="organization">Organization/Institution Name</label>
+                    <input type="text" id="organization" name="organization">
+                </div>
+
+                <button type="button" class="prev-btn" onclick="prevStep()">← Back</button>
+                <button type="submit" class="register-btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center p-3 mt-5">
+        &copy; 2025 Crime Report Management System | Ensuring Justice & Safety
+    </footer>
+
+    <script>
+        const API_URL = "http://127.0.0.1:5000";
+
+        function togglePasswordVisibility(inputId, icon) {
+            let passwordField = document.getElementById(inputId);
+            let eyeIcon = icon.querySelector("i");
+
+            if (passwordField.type === "password") {
+                passwordField.type = "text";
+                eyeIcon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                passwordField.type = "password";
+                eyeIcon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+
+        function nextStep() {
+            document.getElementById("register-step-1").classList.add("hidden");
+            document.getElementById("register-step-2").classList.remove("hidden");
+        }
+
+        function prevStep() {
+            document.getElementById("register-step-2").classList.add("hidden");
+            document.getElementById("register-step-1").classList.remove("hidden");
+        }
+
+        function toggleFields() {
+            let role = document.getElementById("register-role").value;
+            document.getElementById("police-fields").classList.toggle("hidden", role !== "police");
+            document.getElementById("public-fields").classList.toggle("hidden", role !== "public");
+
+            document.getElementById("next-button").disabled = role === "";
+        }
+
+        function toggleOrganizationField() {
+            let status = document.getElementById("current-status").value;
+            document.getElementById("organization").required = (status === "working");
+        }
+
+        document.getElementById("step-2-form").addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const role = document.getElementById('register-role').value;
+            const userData = {
+                username: document.getElementById('register-username').value.trim(),
+                email: document.getElementById('register-email').value.trim(),
+                phone: document.getElementById('register-phone').value.trim(),
+                country_code: document.getElementById('country-code').value,
+                password: document.getElementById('register-password').value.trim(),
+                role: role,
+                dob: document.getElementById('dob').value || null,
+                ...(role === "police" && {
+                    police_id: document.getElementById('police-id').value || null,
+                    station_name: document.getElementById('station-name').value || null,
+                    police_position: document.getElementById('police-position').value || null
+                }),
+                ...(role === "public" && {
+                    aadhaar: document.getElementById('aadhaar').value || null,
+                    current_status: document.getElementById('current-status').value || null,
+                    organization: document.getElementById('organization').value || null
+                })
+            };
+
+            try {
+                const response = await fetch(`${API_URL}/register`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(userData)
+                });
+
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || "Registration failed.");
+
+                alert("Registration successful! Redirecting to login page...");
+                window.location.href = data.redirect;
+            } catch (error) {
+                alert(error.message || "An error occurred.");
+            }
+        });
+    </script>
+
+</body>
+</html>

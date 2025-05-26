@@ -1,0 +1,189 @@
+body {
+    background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+}
+
+.container {
+    background: #4a6274; /* Steel blue for a balanced look */
+    padding: 20px;
+    width: 350px;
+    text-align: center;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Slightly stronger shadow */
+    margin-top: 120px;
+    color: #ffffff; /* White text for contrast */
+}
+
+/* Header Style */
+header {
+    background: linear-gradient(90deg, #343a40 0%, #1d2124 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    border-bottom: 3px solid #ffd700;
+    padding: 15px 30px;
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+header h3 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffd700;
+}
+
+header a {
+    color: #fff;
+    font-weight: 500;
+    margin-right: 20px;
+    text-decoration: none;
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+header a:hover {
+    color: #ffd700;
+    transform: scale(1.1);
+}
+
+header a.active {
+    color: #ffd700;
+    font-weight: bold;
+}
+
+/* Forms and Input Styles */
+.form-label {
+    font-weight: 600;
+    color: #495057;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #ced4da;
+    background-color: #ffffff;
+    color: #343a40;
+}
+
+textarea.form-control {
+    resize: vertical;
+}
+
+/* Table Styles */
+.table {
+    background-color: #ffffff;
+    color: #343a40;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.table th {
+    background-color: #343a40;
+    color: #ffffff;
+    text-align: center;
+    padding: 12px;
+}
+
+.table td {
+    vertical-align: middle;
+    text-align: center;
+    padding: 10px;
+}
+
+.table-bordered {
+    border: 1px solid #dee2e6;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid #dee2e6;
+}
+
+/* Button Styles */
+button, .btn {
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.btn-primary {
+    background-color: #007bff;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+    transform: scale(1.05);
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    transform: scale(1.05);
+}
+
+/* Footer */
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    background: #333;
+    color: white;
+    padding: 20px 30px;
+    text-align: center;
+}
+.search-container {
+    display: flex;
+    align-items: center;
+    max-width: 1400px;
+    margin-bottom: 15px;
+    background: #fff;
+    border: 2px solid #007bff; /* Permanent Border */
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.search-container i {
+    font-size: 18px;
+    color: #007bff;
+    margin-right: 10px;
+}
+
+#searchInput {
+    width: 100%;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    padding: 10px;
+    background: transparent;
+}
+
+#searchInput::placeholder {
+    color: #6c757d;
+    font-style: italic;
+}
+ h4 {
+   color: #000000 !important; /* Updated View Reports color */
+        }
+
